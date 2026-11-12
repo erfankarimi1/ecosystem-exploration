@@ -1,1 +1,23 @@
-/* Intentionally empty. Your styling approach goes here (or somewhere else, depending on the approach). */
+@import "tailwindcss";
+
+/* One place for colors and fonts. Components use these tokens only. */
+@theme {
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --color-brand-50: #eef2ff;
+  --color-brand-600: #4f46e5;
+  --color-brand-700: #4338ca;
+
+  --color-status-want: #475569;
+  --color-status-want-soft: #e2e8f0;
+  --color-status-reading: #92400e;
+  --color-status-reading-soft: #fef3c7;
+  --color-status-done: #166534;
+  --color-status-done-soft: #dcfce7;
+}
+
+@layer base {
+  body {
+    @apply bg-slate-100 font-sans text-slate-900;
+  }
+}

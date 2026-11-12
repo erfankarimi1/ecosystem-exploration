@@ -21,11 +21,12 @@ A reading list built with React 19, TypeScript and Vite. No backend, the data is
 
 <!-- TODO: Replace this section with the rules for the approach you chose. -->
 
-Choose exactly one styling approach per branch and write it down here **before** you build. Example for Tailwind:
+**Approach for this branch: Tailwind CSS v4.**
 
-- Use Tailwind CSS v4 only. No `tailwind.config.js`, configure with `@theme` in `src/index.css`.
+- Use Tailwind CSS v4 only (`tailwindcss` + `@tailwindcss/vite`). No `tailwind.config.js`, configure with `@theme` in `src/index.css`.
+- Colors come from the `@theme` tokens (`brand-*`, `status-*`) in `src/index.css`. Do not write raw hex values or arbitrary values like `bg-[#123]` in components.
 - No inline `style` props, no other CSS libraries.
-- Reuse components. Do not repeat long class lists, extract a component.
+- Reuse components. Do not repeat long class lists, extract a component (`Button`, `formStyles`).
 
 Rules for every approach:
 
