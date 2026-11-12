@@ -21,10 +21,12 @@ A reading list built with React 19, TypeScript and Vite. No backend, the data is
 
 <!-- TODO: Replace this section with the rules for the approach you chose. -->
 
-Choose exactly one styling approach per branch and write it down here **before** you build. Example for Tailwind:
+**Approach for this branch: Bootstrap 5.3 (CSS only).**
 
-- Use Tailwind CSS v4 only. No `tailwind.config.js`, configure with `@theme` in `src/index.css`.
-- No inline `style` props, no other CSS libraries.
+- Import `bootstrap/dist/css/bootstrap.min.css` once in `src/index.tsx`, before `./index.css`.
+- Do not import Bootstrap's JavaScript. Dialogs, toasts and dropdowns are React components (state-driven) that use Bootstrap's classes (`modal`, `toast`, `btn`, `badge`, `card`, `row`/`col`).
+- Use Bootstrap utility classes and components first. `src/index.css` only holds small overrides, set through Bootstrap CSS variables (`--bs-*`) on `:root`.
+- No inline `style` props, no other CSS libraries, no `react-bootstrap`.
 - Reuse components. Do not repeat long class lists, extract a component.
 
 Rules for every approach:
