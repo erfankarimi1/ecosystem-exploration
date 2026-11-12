@@ -21,11 +21,14 @@ A reading list built with React 19, TypeScript and Vite. No backend, the data is
 
 <!-- TODO: Replace this section with the rules for the approach you chose. -->
 
-Choose exactly one styling approach per branch and write it down here **before** you build. Example for Tailwind:
+**Approach for this branch: Material UI (`@mui/material`, Emotion).**
 
-- Use Tailwind CSS v4 only. No `tailwind.config.js`, configure with `@theme` in `src/index.css`.
-- No inline `style` props, no other CSS libraries.
-- Reuse components. Do not repeat long class lists, extract a component.
+- Build the UI from MUI components (Container, Card, Chip, Rating, TextField, ToggleButtonGroup, Dialog, Snackbar, Alert). Do not hand-write look-alikes.
+- Colors, fonts, shape and spacing come from one place: the theme in `src/theme.ts` (`createTheme`). Components use theme values (`color="primary"`, `sx={{ p: 2 }}` spacing units), not raw hex values or pixels.
+- Use the `sx` prop only for small layout tweaks (grid, spacing). It is MUI's styling API, not an inline `style` prop. No `style` props, no CSS files for components, no other CSS libraries.
+- Dialog focus handling (trap, Escape, return focus) comes from MUI's Dialog. Do not re-implement it.
+- `src/index.css` stays empty. `CssBaseline` provides the reset.
+- Reuse components. Do not repeat long `sx` blocks, extract a component.
 
 Rules for every approach:
 

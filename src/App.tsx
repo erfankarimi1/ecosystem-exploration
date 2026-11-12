@@ -1,22 +1,102 @@
+import { useCallback, useState } from "react";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+
+import { filterBooks } from "./books";
+import BookCard from "./components/BookCard";
+import BookGrid from "./components/BookGrid";
+import BookFormDialog from "./components/BookFormDialog";
+import DeleteDialog from "./components/DeleteDialog";
+import EmptyState from "./components/EmptyState";
+import Header from "./components/Header";
+import Toast from "./components/Toast";
+import Toolbar from "./components/Toolbar";
+import type { Book, NewBook, StatusFilter } from "./types";
 import { useBooks } from "./useBooks";
 
+type Dialog =
+  | { kind: "form"; book: Book | null }
+  | { kind: "delete"; book: Book }
+  | null;
 
-// This is the unstyled starting point. It only shows that the data flows.
-// Build your UI here and in new components, see SPEC.md.
 export default function App() {
-  const { books } = useBooks();
+  const { books, addBook, updateBook, deleteBook } = useBooks();
+  const [query, setQuery] = useState("");
+  const [status, setStatus] = useState<StatusFilter>("all");
+  const [dialog, setDialog] = useState<Dialog>(null);
+  const [toast, setToast] = useState<string | null>(null);
+
+  const closeDialog = () => setDialog(null);
+  const closeToast = useCallback(() => setToast(null), []);
+
+  const visibleBooks = filterBooks(books, { status, query });
+
+  function handleSave(values: NewBook) {
+    if (dialog?.kind === "form" && dialog.book) {
+      updateBook(dialog.book.id, values);
+      setToast("Book updated");
+    } else {
+      addBook(values);
+      setToast("Book added");
+    }
+    closeDialog();
+  }
+
+  function handleDelete() {
+    if (dialog?.kind === "delete") {
+      deleteBook(dialog.book.id);
+      setToast("Book deleted");
+    }
+    closeDialog();
+  }
 
   return (
-    <main>
-      <h1 className="title">Reading List</h1>
-      <p className="book-count">{books.length} books</p>
-      <ul className="book-list">
-        {books.map((book) => (
-          <li key={book.id} className="book-item">
-            {book.title} by {book.author} ({book.status})
-          </li>
-        ))}
-      </ul>
-    </main>
+    <>
+      <Container component="main" maxWidth="lg" sx={{ py: 3 }}>
+        <Header onAdd={() => setDialog({ kind: "form", book: null })} />
+        <Toolbar
+          query={query}
+          status={status}
+          onQueryChange={setQuery}
+          onStatusChange={setStatus}
+        />
+        <Typography color="text.secondary" sx={{ mb: 2 }}>
+          {visibleBooks.length} {visibleBooks.length === 1 ? "book" : "books"}
+        </Typography>
+        {visibleBooks.length === 0 ? (
+          <EmptyState />
+        ) : (
+          <BookGrid>
+            {visibleBooks.map((book) => (
+              <li key={book.id}>
+                <BookCard
+                  book={book}
+                  onEdit={(target) => setDialog({ kind: "form", book: target })}
+                  onDelete={(target) =>
+                    setDialog({ kind: "delete", book: target })
+                  }
+                />
+              </li>
+            ))}
+          </BookGrid>
+        )}
+      </Container>
+
+      {dialog?.kind === "form" && (
+        <BookFormDialog
+          book={dialog.book}
+          onSave={handleSave}
+          onClose={closeDialog}
+        />
+      )}
+      {dialog?.kind === "delete" && (
+        <DeleteDialog
+          book={dialog.book}
+          onConfirm={handleDelete}
+          onClose={closeDialog}
+        />
+      )}
+      <Toast message={toast} onClose={closeToast} />
+    </>
   );
 }
