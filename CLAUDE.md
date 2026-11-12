@@ -21,9 +21,12 @@ A reading list built with React 19, TypeScript and Vite. No backend, the data is
 
 <!-- TODO: Replace this section with the rules for the approach you chose. -->
 
-Choose exactly one styling approach per branch and write it down here **before** you build. Example for Tailwind:
+**Approach for this branch: shadcn/ui (on Tailwind CSS v4).**
 
-- Use Tailwind CSS v4 only. No `tailwind.config.js`, configure with `@theme` in `src/index.css`.
+- Add UI primitives with the shadcn CLI (`npx shadcn@latest add <component>`). They live in `src/components/ui/` and are generated code: use them, do not hand-write look-alikes.
+- Compose the app components in `src/components/` from the `ui/` primitives (Button, Card, Badge, Dialog, AlertDialog, Input, Select, Textarea, Label, ToggleGroup, Sonner).
+- Theme with the shadcn CSS variables (`--primary`, `--background`, ...) in `src/index.css`. No `tailwind.config.js`, no raw hex values or arbitrary values in components.
+- Dialog focus handling (trap, Escape, return focus) comes from the Radix primitives under shadcn. Do not re-implement it.
 - No inline `style` props, no other CSS libraries.
 - Reuse components. Do not repeat long class lists, extract a component.
 
